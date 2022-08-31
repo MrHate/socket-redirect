@@ -14,7 +14,7 @@ clang -O2 -g -target bpf -c bpf_sockops.c -o bpf_sockops.o
 
 # Load and attach the bpf_sockops program
 sudo bpftool prog load bpf_sockops.o /sys/fs/bpf/bpf_sockops
-sudo bpftool cgroup attach /sys/fs/cgroup/unified/ sock_ops pinned /sys/fs/bpf/bpf_sockops
+sudo bpftool cgroup attach /sys/fs/cgroup/ sock_ops pinned /sys/fs/bpf/bpf_sockops
 
 # Extract the id of the sockhash map used by the bpf_sockops program
 # This map is then pinned to the bpf virtual file system

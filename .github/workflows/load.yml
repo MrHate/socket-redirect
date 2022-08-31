@@ -1,0 +1,34 @@
+name: Load Test
+
+on:
+  push:
+    branches: 
+      - "*"
+  pull_request:
+    branches:
+      - "*"
+
+jobs:
+  build:
+
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Environment
+      run: sudo apt install -y clang
+    
+    - name: Establish Soft Link
+      run: |
+        sudo ln -s /usr/include/asm-generic /usr/include/asm
+        sudo ls -al /usr/include
+
+    - name: Load & Unload
+      run: |
+        cd bpf
+        sudo ./load.sh
+        sudo bpftool prog show
+        sudo bpftool map show
+        sudo bpftool -p map show
+        sudo ./unload.sh
