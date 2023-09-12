@@ -1,4 +1,5 @@
 #include <linux/swab.h>
+#include <bpf/bpf_helpers.h>
 
 #ifndef __section
 #define __section(NAME) 	\
@@ -58,13 +59,13 @@ static void BPF_FUNC(trace_printk, const char *fmt, int fmt_size, ...);
  * Why should we reuse the map definition bpf_elf_map
  * from iproute2/bpf_elf.h?
  */
-struct bpf_map_def {
-	__u32 type;
-	__u32 key_size;
-	__u32 value_size;
-	__u32 max_entries;
-	__u32 map_flags;
-};
+//struct bpf_map_def {
+//	__u32 type;
+//	__u32 key_size;
+//	__u32 value_size;
+//	__u32 max_entries;
+//	__u32 map_flags;
+//};
 
 struct sock_key {
 	__u32 sip4;
@@ -77,10 +78,20 @@ struct sock_key {
 	__u32 dport;
 } __attribute__((packed));
 
-struct bpf_map_def __section("maps") sock_ops_map = {
-	.type           = BPF_MAP_TYPE_SOCKHASH,
-	.key_size       = sizeof(struct sock_key),
-	.value_size     = sizeof(int),
-	.max_entries    = 65535,
-	.map_flags      = 0,
-};
+//struct bpf_map_def __section("maps") sock_ops_map = {
+//	.type           = BPF_MAP_TYPE_SOCKHASH,
+//	.key_size       = sizeof(struct sock_key),
+//	.value_size     = sizeof(int),
+//	.max_entries    = 65535,
+//	.map_flags      = 0,
+//};
+
+// New declaration syntax for libbpf v1.0+,
+// Reference: https://github.com/libbpf/libbpf/wiki/Libbpf:-the-road-to-v1.0#drop-support-for-legacy-bpf-map-declaration-syntax.
+struct {
+  __uint(type, BPF_MAP_TYPE_SOCKHASH);
+  __uint(max_entries, 65535);
+  __uint(map_flags, 0);
+  __type(key, struct sock_key);
+  __type(value, int);
+} sock_ops_map SEC(".maps");
