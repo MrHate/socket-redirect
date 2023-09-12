@@ -19,4 +19,8 @@ with Cilium code if they understand this simple example.
 # Thanks
 
 Big thanks to the authors of the
-[original blog](https://cyral.com/blog/how-to-ebpf-accelerating-cloud-native/)!
+[original blog](https://cyral.com/blog/how-to-ebpf-accelerating-cloud-native/),
+
+[original blog - performance evaluation](https://cyral.com/blog/lessons-using-ebpf-accelerating-cloud-native/),
+
+and [Chinese translation](http://arthurchiao.art/blog/socket-acceleration-with-ebpf-zh/)!
